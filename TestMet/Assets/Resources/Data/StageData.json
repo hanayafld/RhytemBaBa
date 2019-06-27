@@ -1,0 +1,56 @@
+﻿[
+  {
+    "id": "0",
+    "stage_name": "연무장",
+    "stage_Explanation": "튜토리얼",
+    "stage_PreFabPath": "Stage/Stage00",
+    "audio_Name": "미정",
+    "audio_BPM": "0",
+    "audio_Length": "0"
+  },
+  {
+    "id": "1",
+    "stage_name": "숲",
+    "stage_Explanation": "안 조용한 숲",
+    "stage_PreFabPath": "Stage/Stage01",
+    "audio_Name": "8bit-rebirth",
+    "audio_BPM": "130",
+    "audio_Length": "183"
+  },
+  {
+    "id": "2",
+    "stage_name": "미정1",
+    "stage_Explanation": "미정1",
+    "stage_PreFabPath": "Stage/Stage02",
+    "audio_Name": "미정",
+    "audio_BPM": "0",
+    "audio_Length": "0"
+  },
+  {
+    "id": "3",
+    "stage_name": "미정2",
+    "stage_Explanation": "미정2",
+    "stage_PreFabPath": "Stage/Stage03",
+    "audio_Name": "미정",
+    "audio_BPM": "0",
+    "audio_Length": "0"
+  },
+  {
+    "id": "4",
+    "stage_name": "미정3",
+    "stage_Explanation": "미정3",
+    "stage_PreFabPath": "Stage/Stage04",
+    "audio_Name": "미정",
+    "audio_BPM": "0",
+    "audio_Length": "0"
+  },
+  {
+    "id": "5",
+    "stage_name": "미정4",
+    "stage_Explanation": "미정4",
+    "stage_PreFabPath": "Stage/Stage05",
+    "audio_Name": "미정",
+    "audio_BPM": "0",
+    "audio_Length": "0"
+  }
+]
