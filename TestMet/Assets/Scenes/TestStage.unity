@@ -330,6 +330,7 @@ GameObject:
   m_Component:
   - component: {fileID: 643669272}
   - component: {fileID: 643669271}
+  - component: {fileID: 643669273}
   m_Layer: 0
   m_Name: Stage
   m_TagString: Untagged
@@ -344,7 +345,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 643669270}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 577b35c0b2965e24d8a07c29046184f5, type: 3}
   m_Name: 
@@ -366,6 +367,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &643669273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 643669270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8bcd76da9cf50843b04d0c3ea9cde86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  btn_StartGame: {fileID: 107173708}
+  txt_CountDown: {fileID: 731428849}
+  txt_GameStart: {fileID: 1945577726}
 --- !u!1 &699626652
 GameObject:
   m_ObjectHideFlags: 0

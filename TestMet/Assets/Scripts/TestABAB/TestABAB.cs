@@ -5,6 +5,7 @@ using UnityEngine;
 public class TestABAB : MonoBehaviour
 {
     private Coroutine inputKeyRoutine;
+    private float inputLate = 0.03f;
 
     void Start()
     {
@@ -20,10 +21,11 @@ public class TestABAB : MonoBehaviour
                 case "AD":
                 case "ad":
                     Debug.Log("AD");
+                    //바로 ad동시입력 메서드
                     break;
                 case "A":
                 case "a":
-                    if(this.inputKeyRoutine == null)
+                    if (this.inputKeyRoutine == null)
                     {
                         this.inputKeyRoutine = StartCoroutine(this.InputA());
                     }
@@ -43,7 +45,7 @@ public class TestABAB : MonoBehaviour
 
     private IEnumerator InputA()
     {
-        float i = 0.03f;
+        float i = this.inputLate;
         bool d = false;
         while (i > 0)
         {
@@ -60,17 +62,19 @@ public class TestABAB : MonoBehaviour
         if (d == true)
         {
             Debug.Log("A+D");
+            //ad동시입력 메서드
         }
         else
         {
             Debug.Log("A");
+            //a입력 메서드
         }
         this.inputKeyRoutine = null;
     }
 
     private IEnumerator InputB()
     {
-        float i = 0.03f;
+        float i = this.inputLate;
         bool a = false;
         while (i > 0)
         {
@@ -80,17 +84,19 @@ public class TestABAB : MonoBehaviour
                 a = true;
             }
 
-            i-=Time.deltaTime;
+            i -= Time.deltaTime;
             yield return null;
         }
 
         if (a == true)
         {
             Debug.Log("D+A");
+            //ad동시입력 메서드
         }
         else
         {
             Debug.Log("D");
+            //d입력 메서드
         }
         this.inputKeyRoutine = null;
     }
