@@ -1,75 +1,65 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
+using System.IO;
 using Newtonsoft.Json;
 
 public class InfoManager : MonoBehaviour
 {
     [HideInInspector]
     public static InfoManager Instance;
-
-    [HideInInspector]
     public HeroInfo heroInfo;
 
-    [HideInInspector]
-    public OptionInfo optionInfo;
-
-    void Start()
+    private string path = "/HeroInfo.json";
+    
+    void Awake()
     {
         InfoManager.Instance = this;
     }
 
     public bool LoadInfo()
     {
-        this.heroInfo = new HeroInfo();
-
-        if (File.Exists(Application.dataPath + "/Info/HeroInfo.json"))
+        if (File.Exists(Application.persistentDataPath+path))
         {
-            Debug.Log("파일을 찾았습니다.");
-            var json = File.ReadAllText(Application.dataPath + "/Info/HeroInfo.json");
+            Debug.Log("Load Info");
+            var json = File.ReadAllText(Application.persistentDataPath+path);
             var heroInfo = JsonConvert.DeserializeObject<HeroInfo>(json);
             this.heroInfo = heroInfo;
+
             return true;
         }
         else
         {
-            Debug.Log("파일을 찾지 못했습니다. 신규 생성 해주세요.");
-            DirectoryInfo directoryInfo = new DirectoryInfo(Application.dataPath + "/Info");
+            Debug.Log("Info가 없습니다 NewGame을 하세요.");
 
-            if (directoryInfo.Exists == false)
-            {
-                directoryInfo.Create();
-            }
-
-            this.heroInfo = null;
             return false;
         }
     }
 
-    public HeroInfo CreateInfo()
+    public void SaveInfo(HeroInfo heroInfo)
     {
-        Debug.Log("Info 생성");
+        Debug.Log("Save Info");
+
+        this.heroInfo = heroInfo;
+        var json = JsonConvert.SerializeObject(this.heroInfo);
+        File.WriteAllText(Application.persistentDataPath+this.path, json);
+    }
+
+    public void CreateInfo()
+    {
+        Debug.Log("Create Info");
+
+        var data = DataManager.Instance;
+        data.LoadAllData();
+
         this.heroInfo = new HeroInfo();
+
+        this.heroInfo.id = 0;
         this.heroInfo.stageLevel = 0;
-        //this.heroInfo.maxHp = heroData.defaultHp;
+        this.heroInfo.maxHp = data.dicHeroData[0].defaultHp;
         this.heroInfo.damage = 1;
-        this.heroInfo.gold = 5;
-        this.heroInfo.kill = 0;
-        this.heroInfo.artifacts = new List<int>();
-        
-        return this.heroInfo;
-    }
-    
-    public void SaveInfo()
-    {
-        //Application.dataPath + "/Info/HeroInfo.json"
-
-    }
-
-    public void DeleteInfo()
-    {
-        //Application.dataPath + "/Info/HeroInfo.json"
-        
+        this.heroInfo.gold = 3;
+        //this.heroInfo.artifacts = null;
     }
 }

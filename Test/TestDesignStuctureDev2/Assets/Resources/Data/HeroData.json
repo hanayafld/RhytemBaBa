@@ -1,0 +1,18 @@
+﻿[
+  {
+    "id": "0",
+    "default_hp": "3",
+    "anim_idle": "LightBandit_Idle",
+    "anim_combatidle": "LightGuard_CombatIdle",
+    "anim_attack00": "LightGuard_Attack",
+    "anim_attack01": "LightGuard_Attack",
+    "anim_attack02": "LightGuard_Attack",
+    "anim_attack03": "LightGuard_Attack",
+    "anim_evasion00": "LightGuard_Evasion",
+    "anim_evasion01": "LightGuard_Evasion",
+    "anim_evasion02": "LightGuard_Evasion",
+    "anim_evasion03": "LightGuard_Evasion",
+    "anim_hurt": "LightGuard_Hurt",
+    "anim_death": "LightGuard_Death"
+  }
+]
