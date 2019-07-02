@@ -56,7 +56,7 @@ public class InfoManager : MonoBehaviour
         this.heroInfo = new HeroInfo();
 
         this.heroInfo.id = 0;
-        this.heroInfo.stageLevel = 0;
+        this.heroInfo.stageLevel = 1;//Test용으로 0이 아닌 1을 진입 튜토리얼 만들고 나면 1=>0으로 수정
         this.heroInfo.maxHp = data.dicHeroData[0].defaultHp;
         this.heroInfo.damage = 1;
         this.heroInfo.gold = 3;

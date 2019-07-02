@@ -9,6 +9,9 @@ public class DataManager : MonoBehaviour
     public static DataManager Instance;
 
     public Dictionary<int, HeroData> dicHeroData;
+    public Dictionary<int, CampData> dicCampData;
+    //public Dictionary<int, StageData> dicStageData;
+    //public Dictionary<int, MonsterData> dicMonsterData;
 
     void Awake()
     {
@@ -18,11 +21,15 @@ public class DataManager : MonoBehaviour
     void Start()
     {
         this.dicHeroData = new Dictionary<int, HeroData>();
+        this.dicCampData = new Dictionary<int, CampData>();
+        //this.dicStageData = new Dictionary<int, StageData>();
+        //this.dicMonsterData = new Dictionary<int, MonsterData>();
     }
 
     public void LoadAllData()
     {
-        this.dicHeroData = this.LoadData<HeroData>("Data/HeroData");
+        this.dicHeroData = this.LoadData<HeroData>("Data/HeroData");//히어로 데이터
+        this.dicCampData = this.LoadData<CampData>("Data/CampData");//캠프 데이터
         //this.dicStageData = this.LoadData<StageData>("Data/StageData");
         //this.dicMonsterData = this.LoadDAta<MonsterData>("Data/MonsterData");
     }

@@ -26,6 +26,65 @@ public class InGame : MonoBehaviour
         InfoManager.Instance.LoadInfo();
         this.heroInfo = InfoManager.Instance.heroInfo;
 
+        #region Scene 전환
+        this.OnStartCamp = () =>
+        {
+            //캠프 불러오기
+            Debug.Log("Camp Scene Load");
+            var operCamp = SceneManager.LoadSceneAsync("Camp");
+            operCamp.completed += (AsyncOperation) =>
+              {
+                  var camp = FindObjectOfType<Camp>();
+                  camp.OnCampEnd = () =>
+                    {
+                        this.OnStartStage();
+                    };
+                  camp.Init(this.heroInfo);
+              };
+        };
+
+        this.OnStartStage = () =>
+        {
+            //스테이지 불러오기//스테이지 00 은 튜토리얼
+            Debug.Log("Stage Scene Load");
+            if (this.heroInfo.stageLevel == 0)
+            {
+                //튜토리얼
+                Debug.Log("Tutorial Scene Load");
+                var operTutorial = SceneManager.LoadSceneAsync("Tutorial");
+                operTutorial.completed += (AsyncOperation) =>
+                {
+                    var tutorial = FindObjectOfType<Tutorial>();
+                    tutorial.OnTutorialEnd = () =>
+                    {
+                        this.OnStartProduction();
+                    };
+                };
+            }
+            else
+            {
+                //스테이지 불러오기
+                var operStage = SceneManager.LoadSceneAsync("Stage");
+                operStage.completed += (AsyncOperation) =>
+                {
+                    var stage = FindObjectOfType<Stage>();
+                    stage.OnStageEnd = () =>
+                    {
+                        this.OnStartProduction();
+                    };
+                };
+            }
+        };
+
+        this.OnStartProduction = () =>
+        {
+            //연출 불러오기
+            Debug.Log("Production Scene Load");
+        };
+        #endregion
+
+        //StartCoroutine(this.Touch)
+
         //신규생성
         if (this.heroInfo.stageLevel == 0)
         {
@@ -42,52 +101,9 @@ public class InGame : MonoBehaviour
                   };
               };
         }
-
-
-        this.OnStartCamp = () =>
+        else//신규 유저가 아니라면 캠프에서 시작
         {
-            //캠프 불러오기
-            Debug.Log("Camp Scene Load");
-        };
-
-        this.OnStartStage = () =>
-        {
-            //스테이지 불러오기//스테이지 00 은 튜토리얼
-            Debug.Log("Stage Scene Load");
-            if (this.heroInfo.stageLevel == 0)
-            {
-                //튜토리얼
-                Debug.Log("Tutorial Scene Load");
-                var operTutorial = SceneManager.LoadSceneAsync("Tutorial");
-                operTutorial.completed += (AsyncOperation) =>
-                  {
-                      var tutorial = FindObjectOfType<Tutorial>();
-                      tutorial.OnTutorialEnd = () =>
-                      {
-                          this.OnStartProduction();
-                      };
-                  };
-            }
-            else
-            {
-                //스테이지 불러오기
-                var operStage = SceneManager.LoadSceneAsync("Stage");
-                operStage.completed += (AsyncOperation) =>
-                {
-                    var stage = FindObjectOfType<Stage>();
-                    stage.OnStageEnd = () =>
-                      {
-                          this.OnStartProduction();
-                      };
-                };
-            }
-        };
-
-        this.OnStartProduction = () =>
-        {
-            //연출 불러오기
-            Debug.Log("Production Scene Load");
-        };
+            this.OnStartCamp();
+        }   
     }
-
 }

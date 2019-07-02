@@ -1,0 +1,27 @@
+﻿[
+  {
+    "id": "1",
+    "campName": "미정1",
+    "prefabPath": "InGame/Camp/Camp01"
+  },
+  {
+    "id": "2",
+    "campName": "미정2",
+    "prefabPath": "InGame/Camp/Camp02"
+  },
+  {
+    "id": "3",
+    "campName": "미정3",
+    "prefabPath": "InGame/Camp/Camp03"
+  },
+  {
+    "id": "4",
+    "campName": "미정4",
+    "prefabPath": "InGame/Camp/Camp04"
+  },
+  {
+    "id": "5",
+    "campName": "미정5",
+    "prefabPath": "InGame/Camp/Camp05"
+  }
+]
