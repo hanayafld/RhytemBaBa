@@ -68,10 +68,19 @@ public class InGame : MonoBehaviour
                 operStage.completed += (AsyncOperation) =>
                 {
                     var stage = FindObjectOfType<Stage>();
-                    stage.OnStageEnd = () =>
+                    stage.OnStageClear = () =>
                     {
                         this.OnStartProduction();
                     };
+                    stage.OnStageFailed = () =>
+                    {
+                        this.OnStartCamp();
+                    };
+                    stage.OnStageRestart = () =>
+                    {
+                        this.OnStartStage();
+                    };
+                    stage.Init(this.heroInfo);
                 };
             }
         };

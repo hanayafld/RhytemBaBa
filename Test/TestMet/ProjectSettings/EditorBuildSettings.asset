@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/TestABAB.unity
-    guid: 4a8a3a2c173589f4bb11ee3ae6c68bdc
+    path: Assets/Scenes/TestTouch.unity
+    guid: 18365625f2abd4d49b9d026fa5651796
   m_configObjects: {}
