@@ -7,6 +7,9 @@ using Newtonsoft.Json;
 public class Stage1 : MonoBehaviour
 {
     public Button btn_StartGame;
+    public Button btn_Option;
+    private bool option;
+
     public Text txt_CountDown;
     public Text txt_GameStart;
 
@@ -31,8 +34,12 @@ public class Stage1 : MonoBehaviour
     private bool ticked = false;
 
     private int bitCount = 0;
+    private int audioTimer;
     #endregion
-    
+
+    private Coroutine MetronomeRoutine;
+    private Coroutine TimerRoutine;
+    private Coroutine RunRoutine;
 
     void Awake()
     {
@@ -54,15 +61,49 @@ public class Stage1 : MonoBehaviour
 
         this.btn_StartGame.onClick.AddListener(() =>
         {
+            this.Ready2Game();
+
             StartCoroutine(this.CountDown());
         });
+
+        this.btn_Option.onClick.AddListener(() =>
+        {
+            if (this.option)
+            {
+                //일시정지 풀기
+                StartCoroutine(this.CountDown());
+                this.option = false;
+
+            }
+            else
+            {
+                //일시정지
+                this.PauseMusic();
+                this.option = true;
+            }
+        });
+    }
+
+    private void Ready2Game()
+    {
+        Screen.SetResolution(Screen.width, Screen.height, true);
+        // 오디오 시스템의 현재 시각을 돌려줍니다.
+        //시작틱은, AudioSettings.dspTime; 
+        this.startTick = AudioSettings.dspTime;
+        //샘플레이트에 믹서의 현재 출력 비율을 가져옵니다.
+        this.sampleRate = AudioSettings.outputSampleRate;
+        //다음틱은 오디오시스템의 현재 시각 + 60/bpm startTick + (spb)
+        this.nextTick = startTick + (60d / bpm);
+        //오디오의 길이를 데이터 테이블에서 받아서, 오디오 타이머에 넣기
+        this.bitCount = 0;
+        this.audioTimer = this.audioLength;
     }
 
     private void StartGame()
     {
         Debug.Log("게임 시작");
+
         this.StartMusic();
-        StartCoroutine(this.Run());
 
     }
 
@@ -119,27 +160,25 @@ public class Stage1 : MonoBehaviour
     #region audio, metronome
     private void StartMusic()
     {
-        Screen.SetResolution(Screen.width, Screen.height, true);
-        this.startTick = AudioSettings.dspTime;
-        //시작틱은, AudioSettings.dspTime; 
-        // 오디오 시스템의 현재 시각을 돌려줍니다.
-        this.sampleRate = AudioSettings.outputSampleRate;
-        //샘플레이트에 믹서의 현재 출력 비율을 가져옵니다.
-        this.nextTick = startTick + (60d / bpm);
-        //다음틱은 오디오시스템의 현재 시각 + 60/bpm startTick + (spb)
+        this.bg_Music.Play();
+        this.MetronomeRoutine = StartCoroutine(this.Metronome());
+        this.TimerRoutine = StartCoroutine(this.Timer());
+        this.RunRoutine = StartCoroutine(this.Run());
+    }
 
-        this.bg_Music.gameObject.SetActive(true);
-
-        StartCoroutine(this.Metronome());
-        StartCoroutine(this.Timer());
+    private void PauseMusic()
+    {
+        this.bg_Music.Pause();
+        StopCoroutine(this.MetronomeRoutine);
+        StopCoroutine(this.TimerRoutine);
+        StopCoroutine(this.RunRoutine);
     }
 
     private IEnumerator Timer()
     {
-        var i = this.audioLength;
-        while (i > 0)
+        while (this.audioTimer > 0)
         {
-            i--;
+            this.audioTimer--;
             yield return new WaitForSeconds(1);
         }
         Debug.Log("Timer끝");
@@ -150,7 +189,6 @@ public class Stage1 : MonoBehaviour
     {
         while (true)
         {
-
             this.spb = 60.0f / bpm;
             //spb = 60/ bpm
             double dspTime = AudioSettings.dspTime;

@@ -1,23 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class TestABAB : MonoBehaviour
+public class TestBattleInput : MonoBehaviour
 {
-    private Coroutine inputKeyRoutine;
-    private float inputLate = 0.1f;
+    public System.Action OnKeyA;
+    public System.Action OnKeyB;
+    public System.Action OnkeyAB;
 
-    public Text txt_text;
+    private Coroutine inputKeyRoutine;
+    private float inputLate = 0.07f;
 
     void Start()
     {
-        StartCoroutine(this.ABAB());//키보드 AD버전
-        StartCoroutine(this.Touch());//터치버전
+        StartCoroutine(this.KeyABAB());
+        StartCoroutine(this.TouchABAB());
     }
 
     #region 키보드 AD버전
-    private IEnumerator ABAB()
+    private IEnumerator KeyABAB()
     {
         while (true)
         {
@@ -25,7 +26,6 @@ public class TestABAB : MonoBehaviour
             {
                 case "AD":
                 case "ad":
-                    Debug.Log("AD");
                     //바로 ad동시입력 메서드
                     this.KeyAB();
                     break;
@@ -57,7 +57,6 @@ public class TestABAB : MonoBehaviour
         {
             if (Input.inputString == "D" || Input.inputString == "d")
             {
-                Debug.Log("추가 입력!");
                 d = true;
             }
 
@@ -67,13 +66,11 @@ public class TestABAB : MonoBehaviour
 
         if (d == true)
         {
-            Debug.Log("A+B");
             //ad동시입력 메서드
             this.KeyAB();
         }
         else
         {
-            Debug.Log("A");
             //a입력 메서드
             this.KeyA();
         }
@@ -88,7 +85,6 @@ public class TestABAB : MonoBehaviour
         {
             if (Input.inputString == "A" || Input.inputString == "a")
             {
-                Debug.Log("추가 입력!");
                 a = true;
             }
 
@@ -98,13 +94,11 @@ public class TestABAB : MonoBehaviour
 
         if (a == true)
         {
-            Debug.Log("B+A");
             //ad동시입력 메서드
             this.KeyAB();
         }
         else
         {
-            Debug.Log("B");
             //d입력 메서드
             this.KeyB();
         }
@@ -112,22 +106,22 @@ public class TestABAB : MonoBehaviour
     }
     #endregion
 
-    #region 터치버전
-    private IEnumerator Touch()
+    #region 터치 AB버전
+    private IEnumerator TouchABAB()
     {
         while (true)
         {
-            if (Input.GetMouseButtonUp(0))
+            if (Input.touchCount > 0)
             {
-                Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
-                if (hit.collider != null)
+                Vector2 pos = Input.GetTouch(0).position;    // 터치한 위치
+                Vector2 theTouch = new Vector2(pos.x, pos.y);
+
+                Ray ray = Camera.main.ScreenPointToRay(theTouch);    // 터치한 좌표 레이로 바꾸엉
+                RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);    // 정보 저장할 구조체 만들고
+
+                if (hit.collider != null && Input.GetTouch(0).phase == TouchPhase.Began)    // 딱 처음 터치 할때 발생한다
                 {
-                    if (hit.collider.tag == "KeyA" && hit.collider.tag == "KeyB")
-                    {
-                        this.KeyAB();
-                    }
-                    else if (hit.collider.tag == "KeyA")
+                    if (hit.collider.tag == "KeyA")
                     {
                         if (this.inputKeyRoutine == null)
                         {
@@ -146,38 +140,38 @@ public class TestABAB : MonoBehaviour
             yield return null;
         }
     }
-
     private IEnumerator TouchA()
     {
         float i = this.inputLate;
         bool b = false;
 
-        while (i>0)
+        while (i > 0)
         {
-            if (Input.GetMouseButtonUp(0))
+            if (Input.touchCount > 1)//터치 개수가 2개 이상일때
             {
-                Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
+                Vector2 pos = Input.GetTouch(1).position;    // 터치한 위치
+                Vector2 theTouch = new Vector2(pos.x, pos.y);
+
+                Ray ray = Camera.main.ScreenPointToRay(theTouch);    // 터치한 좌표 레이로 바꾸엉
+                RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);    // 정보 저장할 구조체 만들고
+
                 if (hit.collider.tag == "KeyB")
                 {
-                    Debug.Log("추가 입력!");
                     b = true;
                 }
 
-                i -= Time.deltaTime;
             }
+            i -= Time.deltaTime;//이중터치 타이머
             yield return null;
         }
 
         if (b == true)
         {
-            Debug.Log("A+B");
             //ad동시입력 메서드
             this.KeyAB();
         }
         else
         {
-            Debug.Log("A");
             //a입력 메서드
             this.KeyA();
         }
@@ -189,32 +183,33 @@ public class TestABAB : MonoBehaviour
         float i = this.inputLate;
         bool a = false;
 
-        while (i>0)
+        while (i > 0)
         {
-            if (Input.GetMouseButtonUp(0))
+            if (Input.touchCount > 1)
             {
-                Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
+                Vector2 pos = Input.GetTouch(1).position;    // 터치한 위치
+                Vector2 theTouch = new Vector2(pos.x, pos.y);
+
+                Ray ray = Camera.main.ScreenPointToRay(theTouch);    // 터치한 좌표 레이로 바꾸엉
+                RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);    // 정보 저장할 구조체 만들고
+
                 if (hit.collider.tag == "KeyA")
                 {
-                    Debug.Log("추가 입력!");
                     a = true;
                 }
 
-                i -= Time.deltaTime;
             }
+            i -= Time.deltaTime;//이중터치 타이머
             yield return null;
         }
 
         if (a == true)
         {
-            Debug.Log("B+A");
             //ad동시입력 메서드
             this.KeyAB();
         }
         else
         {
-            Debug.Log("B");
             //a입력 메서드
             this.KeyB();
         }
@@ -222,19 +217,23 @@ public class TestABAB : MonoBehaviour
     }
     #endregion
 
+
     private void KeyA()
     {
-        this.txt_text.text = "A";
+        Debug.Log("키 입력 A");
+        //this.OnKeyA();
     }
 
     private void KeyB()
     {
-        this.txt_text.text = "B";
+        Debug.Log("키 입력 B");
+        //this.OnKeyB();
     }
 
     private void KeyAB()
     {
-        this.txt_text.text = "AB";
-        Handheld.Vibrate();
+        Debug.Log("키 입력 AB");
+        //this.OnkeyAB();
+        Handheld.Vibrate();//휴대폰 진동(나중에 옵션인포 추가해서 진동 켜고 끄고 할 수 있게하기)
     }
 }
