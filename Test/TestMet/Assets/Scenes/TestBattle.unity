@@ -166,6 +166,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   txt_CountDown: {fileID: 1604252422971823417}
   txt_GameStart: {fileID: 1536460991242378514}
+  eff_hitA: {fileID: 8300000, guid: cb7b21adfd9e47e4590cae97713b7b73, type: 3}
+  eff_hitB: {fileID: 8300000, guid: dbfc805ff2d2e1e4ab6cbd96412616e3, type: 3}
   img_UIoutLine: {fileID: 891756620}
   stagePrefab: {fileID: 878662027}
   bgm_stageBPM: 130

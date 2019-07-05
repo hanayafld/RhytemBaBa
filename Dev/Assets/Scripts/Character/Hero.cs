@@ -4,14 +4,24 @@ using UnityEngine;
 
 public class Hero : MonoBehaviour
 {
-    [HideInInspector]
-    public Animator anim;
+    public System.Action OnDiedHero;
 
-    void Start()
+    [HideInInspector]
+    private Animator anim;
+
+    void Awake()
     {
-        this.anim = this.GetComponentInChildren<Animator>();
+        this.anim = GetComponentInChildren<Animator>();
 
     }
 
+    public void Run()
+    {
+        this.anim.Play("run");
+    }
 
+    public void Idle()
+    {
+        this.anim.Play("idle");
+    }
 }

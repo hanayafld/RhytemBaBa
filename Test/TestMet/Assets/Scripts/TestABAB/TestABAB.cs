@@ -7,6 +7,8 @@ public class TestABAB : MonoBehaviour
 {
     private Coroutine inputKeyRoutine;
     private float inputLate = 0.1f;
+    public AudioSource eff_hitA;
+    public AudioSource eff_hitB;
 
     public Text txt_text;
 
@@ -225,16 +227,20 @@ public class TestABAB : MonoBehaviour
     private void KeyA()
     {
         this.txt_text.text = "A";
+        this.eff_hitA.Play();
     }
 
     private void KeyB()
     {
         this.txt_text.text = "B";
+        this.eff_hitB.Play();
     }
 
     private void KeyAB()
     {
         this.txt_text.text = "AB";
+        this.eff_hitA.Play();
+        this.eff_hitB.Play();
         Handheld.Vibrate();
     }
 }

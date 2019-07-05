@@ -3,42 +3,78 @@
     "id": "0",
     "stageName": "연무장",
     "prefabPath": "InGame/Stage/Stage00",
-    "BPM": "0",
-    "Length": "0"
+    "bgm_BPM": "0",
+    "bgm_Length": "0",
+    "bgm_Type": "0",
+    "bgm_Standby": "0",
+    "bgm_bossBPM": "0",
+    "bgm_bossLength": "0",
+    "bgm_bossType": "0",
+    "bgm_bossStandby": "0"
   },
   {
     "id": "1",
     "stageName": "숲",
     "prefabPath": "InGame/Stage/Stage01",
-    "BPM": "0",
-    "Length": "0"
+    "bgm_BPM": "130",
+    "bgm_Length": "183",
+    "bgm_Type": "1",
+    "bgm_Standby": "0",
+    "bgm_bossBPM": "130",
+    "bgm_bossLength": "183",
+    "bgm_bossType": "0",
+    "bgm_bossStandby": "0"
   },
   {
     "id": "2",
     "stageName": "미정2",
     "prefabPath": "InGame/Stage/Stage02",
-    "BPM": "0",
-    "Length": "0"
+    "bgm_BPM": "0",
+    "bgm_Length": "0",
+    "bgm_Type": "0",
+    "bgm_Standby": "0",
+    "bgm_bossBPM": "0",
+    "bgm_bossLength": "0",
+    "bgm_bossType": "0",
+    "bgm_bossStandby": "0"
   },
   {
     "id": "3",
     "stageName": "미정3",
     "prefabPath": "InGame/Stage/Stage03",
-    "BPM": "0",
-    "Length": "0"
+    "bgm_BPM": "0",
+    "bgm_Length": "0",
+    "bgm_Type": "0",
+    "bgm_Standby": "0",
+    "bgm_bossBPM": "0",
+    "bgm_bossLength": "0",
+    "bgm_bossType": "0",
+    "bgm_bossStandby": "0"
   },
   {
     "id": "4",
     "stageName": "미정4",
     "prefabPath": "InGame/Stage/Stage04",
-    "BPM": "0",
-    "Length": "0"
+    "bgm_BPM": "0",
+    "bgm_Length": "0",
+    "bgm_Type": "0",
+    "bgm_Standby": "0",
+    "bgm_bossBPM": "0",
+    "bgm_bossLength": "0",
+    "bgm_bossType": "0",
+    "bgm_bossStandby": "0"
   },
   {
     "id": "5",
     "stageName": "성",
     "prefabPath": "InGame/Stage/Stage05",
-    "BPM": "0",
-    "Length": "0"
+    "bgm_BPM": "0",
+    "bgm_Length": "0",
+    "bgm_Type": "0",
+    "bgm_Standby": "0",
+    "bgm_bossBPM": "0",
+    "bgm_bossLength": "0",
+    "bgm_bossType": "0",
+    "bgm_bossStandby": "0"
   }
 ]

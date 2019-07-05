@@ -17,6 +17,8 @@ public class TestBattle : MonoBehaviour
 
     #region Audio
     private AudioSource bgm_source;
+    public AudioClip eff_hitA;
+    public AudioClip eff_hitB;
 
     //Metronome
     public Image img_UIoutLine;
@@ -57,7 +59,7 @@ public class TestBattle : MonoBehaviour
     public TestBattleHero hero;
 
     #region 전투 관련
-
+    
     #endregion
 
     void Start()
@@ -232,8 +234,9 @@ public class TestBattle : MonoBehaviour
             //if(적 HP가 <= 0)
                 //bool 적이있음 = false;
                 //사망애니메이션과 맵과함께 뒤로 퇴장
-            //if(!적이있음)
-                //bool 적 소환 = true;
+            //if(적이있음 == true)
+                //
+                
             //else
                 //Random패턴 = 말풍선 띄우기
         //if(this.bitCount == 8)
