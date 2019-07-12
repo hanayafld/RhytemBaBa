@@ -15,11 +15,14 @@ public class Stage : MonoBehaviour
     public Image img_dim;
 
     public Hero hero;
+    private Monster currentMonster;
     private StagePrefab stage;
 
     #region Ontick용(게임진행용)
     private int bitCount;
     private int stageProgress;//0:스테이지 시작 1:스테이지 클리어 2:보스클리어
+    private bool isEnemy;
+
     #endregion
 
     public void Init(HeroInfo heroInfo)
@@ -355,7 +358,7 @@ public class Stage : MonoBehaviour
     private void KeyAB()
     {
         Debug.Log("KeyAB");
-        Handheld.Vibrate();
+        //Handheld.Vibrate();
     }
     #endregion
     #endregion

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - KeyA
   - KeyB
+  - Note
   layers:
   - Default
   - TransparentFX
