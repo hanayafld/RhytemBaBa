@@ -6,11 +6,19 @@ public class Monster : MonoBehaviour
 {
     public System.Action OnDieMonster;
 
-    internal Animator anim;
-    
+    public int id;
+
+    [HideInInspector]
+    public Animator anim;
+    [HideInInspector]
+    public int damage;
+    [HideInInspector]
+    public int hp;
+
     void Awake()
     {
         this.anim = GetComponentInChildren<Animator>();
-    }
+        DataManager.Instance.LoadAllData();
 
+    }
 }

@@ -43,6 +43,10 @@ public class StagePrefab : MonoBehaviour
     private int audioTimer;
     #endregion
 
+    #region 몬스터 관련
+    public Monster[] arrStageMonster;
+    #endregion
+
     void Awake()
     {
         //인포 불러오기 why? StageLevel가져오려고

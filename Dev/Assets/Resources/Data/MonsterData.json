@@ -1,0 +1,16 @@
+﻿[
+  {
+    "id": "0",
+    "name": "산적",
+    "damage": "1",
+    "hp": "4",
+    "prefabPath": "Character/Monster/Bandit"
+  },
+  {
+    "id": "1",
+    "name": "피로물든 산적",
+    "damage": "2",
+    "hp": "8",
+    "prefabPath": "Character/Monster/BanditBlood"
+  }
+]
