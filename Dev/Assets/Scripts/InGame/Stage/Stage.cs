@@ -5,30 +5,46 @@ using UnityEngine.UI;
 
 public class Stage : MonoBehaviour
 {
+    #region Action
     public System.Action OnStageClear;//스테이지 클리어시
     public System.Action OnStageRestart;//스테이시 다시시작 시
     public System.Action OnStageFailed;//스테이지 실패시
 
     private System.Action OnStartGame;//카운트 다운 끝나면
+    #endregion
 
     private HeroInfo heroinfo;
     private StageData stageData;
 
+    #region UI
     public Image img_dim;
     public Image img_UIOutLine;
     public Text txt_countDown;//카운트 다운 텍스트
     public Text txt_startGame;//게임 시작! 알림 텍스트
+    #endregion
 
+    #region 게임 진행
     public Hero hero;
+    private List<Monster> stageMonsters;
     private Monster currentMonster;//현제 전투중인 몬스터
-    private StagePrefab stage;
+    private StagePrefab stagePrefab;
 
-    #region Ontick용(게임진행용)
     private int bitCount;//0~15 // 비트 카운트 홀수는 엇박
     private int stageProgress;//0:스테이지 시작 1:스테이지 클리어 2:보스클리어
     private bool spawnMonster;
 
+    #region Note
+    public Goal perfectZone;
+    public Goal missZone;
     #endregion
+
+    #endregion
+
+
+    void Awake()
+    {
+        this.stageMonsters = new List<Monster>();
+    }
 
     public void Init(HeroInfo heroInfo)
     {
@@ -40,14 +56,14 @@ public class Stage : MonoBehaviour
         DataManager.Instance.LoadAllData();
         this.stageData = DataManager.Instance.dicStageData[this.heroinfo.stageLevel];
 
-        //스테이지 프리팹 불러오기
-        this.LoadPrefab();
+        this.LoadStagePrefab();//스테이지 프리팹 불러오기
+        this.Ready2Monster();//몬스터들 불러오기
 
-        this.stage.OnTick = () =>
+        this.stagePrefab.OnTick = () =>
         {
             this.OnTick();//스테이지에서 온틱 넘어올때마다, 여기서 온 틱 호출
         };
-        this.stage.OnTimerEnd = () =>
+        this.stagePrefab.OnTimerEnd = () =>
         {
             this.TimerEnd();//노래 시간 끝
             this.stageProgress++;
@@ -57,7 +73,7 @@ public class Stage : MonoBehaviour
                 //보스전 이전 짧은 UI연출 넣고
                 this.StartGameBoss();
             }
-            else if(this.stageProgress==2)
+            else if (this.stageProgress == 2)
             {
                 this.OnStageClear();
             }
@@ -86,18 +102,29 @@ public class Stage : MonoBehaviour
 
     private void OnTick()
     {
-        //비트가 정박일때
+        //비트가 정박일때 아웃라인 반짝이기
         if (this.bitCount % 2 == 0 && this.currentMonster != null)
         {
             StartCoroutine(this.UIOutLinePop());
         }
         #region 적 스폰 전투 기능 구현
 
+        //비트가 0~7일때
+        if (this.bitCount < 8)
+        {
+            //노트생성
+        }
+
         //비트카운트가 0일때
         if (this.bitCount == 0)
         {
             this.Tick_0();
         }
+        else if (this.bitCount == 8)
+        {
+            this.Tick_8();
+        }
+
         //if(적 HP가 <= 0)
         //bool 적이있음 = false;
         //사망애니메이션과 맵과함께 뒤로 퇴장
@@ -123,9 +150,10 @@ public class Stage : MonoBehaviour
     }
 
     #region Tick_Num
+
     private void Tick_0()
     {
-        if (this.currentMonster.hp <= 0)
+        if (this.currentMonster != null && this.currentMonster.hp <= 0)
         {
             Debug.Log("몬스터 죽음");
             this.currentMonster = null;
@@ -138,13 +166,14 @@ public class Stage : MonoBehaviour
         }
         else
         {
-            //몬스터가 없을 시 패턴 실행+말풍선 띄우기(4에서 말풍선 지우기)
+            //몬스터가 있을 시 패턴 실행+말풍선 띄우기(4에서 말풍선 지우기)
+            Debug.Log("몬스터 있음");
         }
     }
 
-    private void Tick_5()
+    private void Tick_8()
     {
-        if(this.spawnMonster)
+        if (this.spawnMonster)
         {
             this.SpawnMonster();//몬스터 소환
         }
@@ -152,36 +181,42 @@ public class Stage : MonoBehaviour
     #endregion
 
     #region 게임 시작 관련
-    private void LoadPrefab()
+    private void LoadStagePrefab()
     {
         Debug.Log("LoadPrefab");
         var stagePrefab = Resources.Load<GameObject>(this.stageData.prefabPath);
-        this.stage = Instantiate(stagePrefab).GetComponent<StagePrefab>();
+        this.stagePrefab = Instantiate(stagePrefab).GetComponent<StagePrefab>();
         //스테이지(맵, 오디오, 메트로놈 등 다 stage에서 뽑아쓰기)
         //Ontick을 StagePrefab이 아닌 Stage에 분리시켜서 Stage.cs에서 사용하기
     }//프리팹 로드
 
-    private void StartGame()
+    private void StartGame()//게임 시작
     {
         Debug.Log("StartGame");
-        this.stage.StartMusic();    //노래 시작
-        this.stage.MapScrolling();  //맵 스크롤링 시작
+        this.stagePrefab.StartMusic();    //노래 시작
+        this.stagePrefab.MapScrolling();  //맵 스크롤링 시작
         this.hero.Run();    //캐릭터 달리기 애니메이션 시작
     }//게임시작
 
-    private void StartGameBoss()
+    private void StartGameBoss()//보스전 시작
     {
         Debug.Log("StartGame");
-        this.stage.StartBossMusic();    //노래 시작
-        this.stage.MapScrolling();  //맵 스크롤링 시작
+        this.stagePrefab.StartBossMusic();    //노래 시작
+        this.stagePrefab.MapScrolling();  //맵 스크롤링 시작
         this.hero.Run();    //캐릭터 달리기 애니메이션 시작
+    }
+
+    private void Encounter()//적 조우
+    {
+        this.hero.BattleIdle();
+        this.stagePrefab.StopMapScrolling();
     }
 
     private void TimerEnd()
     {
         //노래, 달리기, 메트로놈 중단
-        this.stage.StopMusic();
-        this.stage.StopMapScrolling();
+        this.stagePrefab.StopMusic();
+        this.stagePrefab.StopMapScrolling();
         this.hero.Idle();
     }
 
@@ -245,16 +280,47 @@ public class Stage : MonoBehaviour
     #endregion
 
     #region 몬스터 소환
+    private void Ready2Monster()//몬스터 리스트 준비
+    {
+        Debug.Log("몬스터 리스트 준비");
+        var dic = DataManager.Instance.dicMonsterData;
+
+        int[] monsterID = this.stagePrefab.arrMonsterID;//스테이지프리팹에서 몬스터 아이디들 받아와서
+        for (int i = 0; i < monsterID.Length; i++)//전부 생성해서 리스트에 넣기
+        {
+            var data = dic[monsterID[i]];
+            var monsterPrefab = Resources.Load<Monster>(data.prefabPath);
+            var monster = Instantiate(monsterPrefab);
+            monster.id = data.id;
+            monster.hp = data.hp;
+            monster.damage = data.damage;
+
+            monster.gameObject.SetActive(false);
+            this.stageMonsters.Add(monster);
+        }
+    }
+
     private void SpawnMonster()
     {
         var dic = DataManager.Instance.dicMonsterData;
 
-        int a = Random.Range(1, 100);
-        if (a >= 70)
+        int spawnPercentage = Random.Range(1, 100);
+        if (spawnPercentage >= 70)//70%확률로 몬스터 소환
         {
             //몬스터 소환
+            int spawnRoulette = Random.Range(0, this.stageMonsters.Count);
+            var monster = this.stageMonsters[spawnRoulette];
+
+            this.currentMonster = monster;
+            //this.currentMonster.id = monster.id;
+            //this.currentMonster.hp = monster.hp;
+            //this.currentMonster.damage = monster.damage;
+
+            this.currentMonster.gameObject.SetActive(true);
+            this.spawnMonster = false;
+            this.Encounter();
         }
-        
+
     }
     #endregion
 
@@ -462,17 +528,45 @@ public class Stage : MonoBehaviour
     private void KeyA()
     {
         Debug.Log("KeyA");
+        if (this.perfectZone.Operate)
+        {
+            this.CheckNote(0);
+        }
+        else if (this.missZone.Operate)
+        {
+            //miss
+        }
     }
 
     private void KeyB()
     {
         Debug.Log("KeyB");
+        if (this.perfectZone.Operate)
+        {
+            this.CheckNote(1);
+        }
+        else if (this.missZone.Operate)
+        {
+            //miss
+        }
     }
 
     private void KeyAB()
     {
         Debug.Log("KeyAB");
-        //Handheld.Vibrate();
+        if (this.perfectZone.Operate)
+        {
+            this.CheckNote(2);
+        }
+        else if (this.missZone.Operate)
+        {
+            //miss
+        }
+    }
+
+    private void CheckNote(int key)//0 = A, 1 = B, 2 = AB
+    {
+
     }
     #endregion
     #endregion

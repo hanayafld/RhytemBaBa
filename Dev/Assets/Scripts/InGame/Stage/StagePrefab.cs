@@ -23,8 +23,6 @@ public class StagePrefab : MonoBehaviour
     private Coroutine timerRoutine;
     private Coroutine metronomeRoutine;
 
-    public Image img_UIoutLine;//아웃라인 깜빡 깜빡용
-
     public AudioSource bgm_source;
     public AudioSource bgm_bossSource;
 
@@ -44,7 +42,7 @@ public class StagePrefab : MonoBehaviour
     #endregion
 
     #region 몬스터 관련
-    public Monster[] arrStageMonster;
+    public int[] arrMonsterID;
     #endregion
 
     void Awake()
@@ -86,13 +84,14 @@ public class StagePrefab : MonoBehaviour
     public void StopMapScrolling()
     {
         this.StopCoroutine(this.mapScrollRoutine);
-        this.mapScrollRoutine = null;
+        //this.mapScrollRoutine = null;
     }
     #endregion
 
     #region 오디오, 메트로놈 관련
     public void StartMusic()
     {
+        Debug.Log("스테이지 오디오 셋팅");
         this.bgm_currentSource = this.bgm_source;   //기본 음악 소스
         this.audioTimer = this.stageData.bgm_Length;    //기본 음악 길이
         this.bgm_currentBPM = this.stageData.bgm_BPM * 2;    //기본 음악 BPM(반박자 표현을 위해서 *2)
@@ -102,6 +101,7 @@ public class StagePrefab : MonoBehaviour
 
     public void StartBossMusic()
     {
+        Debug.Log("보스전 오디오 셋팅");
         this.bgm_currentSource = this.bgm_bossSource;   //보스 음악 소스
         this.audioTimer = this.stageData.bgm_bossLength;    //보스 음악 길이
         this.bgm_currentBPM = this.stageData.bgm_BPM * 2;   //보스 음악 BPM(반박자 표현을 위해서 *2)

@@ -8,4 +8,9 @@ public class MonsterData : RawData
     public int damage;
     public int hp;
     public string prefabPath;
+
+    public string pattern_00;
+    public string pattern_01;
+    public string pattern_02;
+    public string pattern_03;
 }

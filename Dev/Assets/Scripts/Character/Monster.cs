@@ -10,15 +10,20 @@ public class Monster : MonoBehaviour
 
     [HideInInspector]
     public Animator anim;
-    [HideInInspector]
     public int damage;
-    [HideInInspector]
     public int hp;
 
     void Awake()
     {
         this.anim = GetComponentInChildren<Animator>();
-        DataManager.Instance.LoadAllData();
+    }
 
+    public void Spawn()
+    {
+        DataManager.Instance.LoadAllData();
+        var data = DataManager.Instance.dicMonsterData[this.id];
+        this.id = data.id;
+        this.hp = data.hp;
+        this.damage = data.damage;
     }
 }

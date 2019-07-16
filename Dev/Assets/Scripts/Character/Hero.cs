@@ -7,13 +7,11 @@ public class Hero : MonoBehaviour
     public System.Action OnDiedHero;
 
     private Animator anim;
-    private Dictionary<int, HeroData> dicHeroData;
+    
     void Awake()
     {
         this.anim = GetComponentInChildren<Animator>();
 
-        DataManager.Instance.LoadAllData();
-        dicHeroData = DataManager.Instance.dicHeroData;
     }
 
     public void Run()
@@ -24,5 +22,10 @@ public class Hero : MonoBehaviour
     public void Idle()
     {
         this.anim.Play("idle");
+    }
+
+    public void BattleIdle()
+    {
+        this.anim.Play("B_waiting");
     }
 }

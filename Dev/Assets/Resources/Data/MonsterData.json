@@ -4,13 +4,21 @@
     "name": "산적",
     "damage": "1",
     "hp": "4",
-    "prefabPath": "Character/Monster/Bandit"
+    "prefabPath": "Character/Monster/Bandit",
+    "pattern_00": "20201010",
+    "pattern_01": "20201010",
+    "pattern_02": "20201010",
+    "pattern_03": "20201010"
   },
   {
     "id": "1",
     "name": "피로물든 산적",
     "damage": "2",
     "hp": "8",
-    "prefabPath": "Character/Monster/BanditBlood"
+    "prefabPath": "Character/Monster/BanditBlood",
+    "pattern_00": "20204010",
+    "pattern_01": "20204010",
+    "pattern_02": "20204010",
+    "pattern_03": "20204010"
   }
 ]
