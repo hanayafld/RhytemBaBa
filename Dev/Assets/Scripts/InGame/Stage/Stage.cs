@@ -36,6 +36,7 @@ public class Stage : MonoBehaviour
     #region Note
     public Goal perfectZone;
     public Goal missZone;
+    public Note[] notes;
     #endregion
 
     #endregion
@@ -107,15 +108,9 @@ public class Stage : MonoBehaviour
         {
             StartCoroutine(this.UIOutLinePop());
         }
-        #region 적 스폰 전투 기능 구현
 
-        //비트가 0~7일때
-        if (this.bitCount < 8)
-        {
-            //노트생성
-        }
 
-        //비트카운트가 0일때
+        #region 비트 카운트가 0~15일때 개별 동작
         if (this.bitCount == 0)
         {
             this.Tick_0();
@@ -124,24 +119,15 @@ public class Stage : MonoBehaviour
         {
             this.Tick_8();
         }
-
-        //if(적 HP가 <= 0)
-        //bool 적이있음 = false;
-        //사망애니메이션과 맵과함께 뒤로 퇴장
-        //if(적이있음 == true)
-        //
-
-        //else
-        //Random패턴 = 말풍선 띄우기
-        //if(this.bitCount == 8)
-        //if(적이있음)
-        //말풍선 지우기
-        //else
-        //적 소환하기 Random
-
-
-
         #endregion
+
+        //비트가 0~7일때//몬스터가 살아있으면
+        if (this.bitCount < 8 && this.currentMonster != null)
+        {
+            //패턴 진행
+        }
+
+        //비트카운트 업과 초기화
         this.bitCount++;
         if (this.bitCount > 15)
         {
@@ -151,7 +137,7 @@ public class Stage : MonoBehaviour
 
     #region Tick_Num
 
-    private void Tick_0()
+    private void Tick_0()//몬스터 죽음 판정, 몬스터 없을시 소환, 몬스터 있을 시 패턴 및 대사 On
     {
         if (this.currentMonster != null && this.currentMonster.hp <= 0)
         {
@@ -167,7 +153,9 @@ public class Stage : MonoBehaviour
         else
         {
             //몬스터가 있을 시 패턴 실행+말풍선 띄우기(4에서 말풍선 지우기)
-            Debug.Log("몬스터 있음");
+
+            //몬스터 패턴 정하고, 대사띄우는 메서드
+            this.currentMonster.PartternDice();
         }
     }
 
@@ -291,9 +279,6 @@ public class Stage : MonoBehaviour
             var data = dic[monsterID[i]];
             var monsterPrefab = Resources.Load<Monster>(data.prefabPath);
             var monster = Instantiate(monsterPrefab);
-            monster.id = data.id;
-            monster.hp = data.hp;
-            monster.damage = data.damage;
 
             monster.gameObject.SetActive(false);
             this.stageMonsters.Add(monster);
@@ -308,19 +293,15 @@ public class Stage : MonoBehaviour
         if (spawnPercentage >= 70)//70%확률로 몬스터 소환
         {
             //몬스터 소환
-            int spawnRoulette = Random.Range(0, this.stageMonsters.Count);
-            var monster = this.stageMonsters[spawnRoulette];
+            int spwanDice = Random.Range(0, this.stageMonsters.Count);
+            var monster = this.stageMonsters[spwanDice];
 
             this.currentMonster = monster;
-            //this.currentMonster.id = monster.id;
-            //this.currentMonster.hp = monster.hp;
-            //this.currentMonster.damage = monster.damage;
+            this.currentMonster.Spawn();//몬스터의 hp를 초기화하고 오브젝트 등장
 
-            this.currentMonster.gameObject.SetActive(true);
             this.spawnMonster = false;
-            this.Encounter();
+            this.Encounter();//인카운터 : 몬스터 만남을 뜻함
         }
-
     }
     #endregion
 
