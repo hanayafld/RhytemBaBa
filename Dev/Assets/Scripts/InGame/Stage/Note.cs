@@ -13,7 +13,7 @@ public class Note : MonoBehaviour
     public void CreateNote(float bpm, int type)
     {
 
-        this.speed = bpm / 900f;
+        this.speed = bpm / 3600f;
         this.type = type;
 
         if (this.type != 0)

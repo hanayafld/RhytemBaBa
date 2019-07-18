@@ -5,10 +5,10 @@
     "damage": "1",
     "hp": "4",
     "prefabPath": "Character/Monster/Bandit",
-    "pattern_00": "20201010",
-    "pattern_01": "20201010",
-    "pattern_02": "20201010",
-    "pattern_03": "20201010"
+    "pattern_00": "0200020001000100",
+    "pattern_01": "0200020001000100",
+    "pattern_02": "0200020001000100",
+    "pattern_03": "0200020001000100"
   },
   {
     "id": "1",
@@ -16,9 +16,9 @@
     "damage": "2",
     "hp": "8",
     "prefabPath": "Character/Monster/BanditBlood",
-    "pattern_00": "20204010",
-    "pattern_01": "20204010",
-    "pattern_02": "20204010",
-    "pattern_03": "20204010"
+    "pattern_00": "0200020004000100",
+    "pattern_01": "0200020004000100",
+    "pattern_02": "0200020004000100",
+    "pattern_03": "0200020004000100"
   }
 ]

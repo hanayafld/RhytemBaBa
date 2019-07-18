@@ -500,7 +500,8 @@ MonoBehaviour:
   speed: 1
   bgm_source: {fileID: 3793548556280683672}
   bgm_bossSource: {fileID: 4763760065923031446}
-  arrMonsterID: 0000000001000000
+  bgm_currentBPM: 0
+  arrMonsterID: 0000000000000000
 --- !u!1 &3793548557978064200
 GameObject:
   m_ObjectHideFlags: 0

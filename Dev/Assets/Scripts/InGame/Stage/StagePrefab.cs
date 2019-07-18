@@ -27,8 +27,10 @@ public class StagePrefab : MonoBehaviour
     public AudioSource bgm_bossSource;
 
     private AudioSource bgm_currentSource;
-    private float bgm_currentBPM;
     private int bgm_currentLength;
+    [HideInInspector]
+    public float bgm_currentBPM;
+
 
     private double startTick;
     private double nextTick = 0.0f;

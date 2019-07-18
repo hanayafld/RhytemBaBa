@@ -33,6 +33,7 @@ public class Monster : MonoBehaviour
 
     public void Spawn()
     {
+        Debug.Log("Monster - Spawn");
         DataManager.Instance.LoadAllData();
         var data = DataManager.Instance.dicMonsterData[this.id];
         this.id = data.id;
@@ -43,6 +44,7 @@ public class Monster : MonoBehaviour
 
     public void PartternDice()
     {
+        Debug.Log("PartternDice");
         var partternID = UnityEngine.Random.Range(0, this.partterns.Count);
         var aa = this.partterns[partternID];//한줄짜리 패턴
         for (int i = 0; i < aa.Length; i += 2)

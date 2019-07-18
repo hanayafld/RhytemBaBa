@@ -37,6 +37,7 @@ public class Stage : MonoBehaviour
     public Goal perfectZone;
     public Goal missZone;
     public Note[] notes;
+    private bool battleSwitch;
     #endregion
 
     #endregion
@@ -122,9 +123,14 @@ public class Stage : MonoBehaviour
         #endregion
 
         //비트가 0~7일때//몬스터가 살아있으면
-        if (this.bitCount < 8 && this.currentMonster != null)
+        if (this.bitCount < 8 && this.battleSwitch)
         {
             //패턴 진행
+            Debug.LogFormat("{0} : {1}", this.bitCount,this.currentMonster.currentParttern[this.bitCount]);
+            var partternType = this.currentMonster.currentParttern[this.bitCount];
+
+            this.notes[this.bitCount].CreateNote(this.stagePrefab.bgm_currentBPM, partternType);
+           
         }
 
         //비트카운트 업과 초기화
@@ -147,7 +153,6 @@ public class Stage : MonoBehaviour
 
         if (this.currentMonster == null)
         {
-            //(bit count==5 에서)몬스터 소환
             this.spawnMonster = true;
         }
         else
@@ -156,6 +161,7 @@ public class Stage : MonoBehaviour
 
             //몬스터 패턴 정하고, 대사띄우는 메서드
             this.currentMonster.PartternDice();
+            this.battleSwitch = true;
         }
     }
 
@@ -227,7 +233,6 @@ public class Stage : MonoBehaviour
                 break;
             }
             i--;
-            Debug.Log(i);
             yield return new WaitForSeconds(1);
         }
     }
@@ -290,10 +295,11 @@ public class Stage : MonoBehaviour
         var dic = DataManager.Instance.dicMonsterData;
 
         int spawnPercentage = Random.Range(1, 100);
-        if (spawnPercentage >= 70)//70%확률로 몬스터 소환
+        Debug.LogFormat("몬스터 소환 dice : {0}", spawnPercentage);
+        if (spawnPercentage <= 70)//70%확률로 몬스터 소환
         {
             //몬스터 소환
-            int spwanDice = Random.Range(0, this.stageMonsters.Count);
+            int spwanDice = Random.Range(0, this.stageMonsters.Count-1);
             var monster = this.stageMonsters[spwanDice];
 
             this.currentMonster = monster;
