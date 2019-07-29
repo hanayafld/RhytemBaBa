@@ -25,13 +25,13 @@ public class Stage : MonoBehaviour
 
     #region 게임 진행
     public Hero hero;
-    private List<Monster> stageMonsters;
+    private List<Monster> stageMonsters;//필요한 가?
     private Monster currentMonster;//현제 전투중인 몬스터
-    private StagePrefab stagePrefab;
+    private StagePrefab stagePrefab;//heroinfo.stageLevel에 맞는 스테이지 프리팹 불러오기
 
     private int bitCount;//0~15 // 비트 카운트 홀수는 엇박
     private int stageProgress;//0:스테이지 시작 1:스테이지 클리어 2:보스클리어
-    private bool spawnMonster;
+    private bool spawnMonster;//몬스터가 없으면 true가 되고 true이면 몬스터를 소환함
 
     #region Note
     public Goal perfectZone;
@@ -110,7 +110,6 @@ public class Stage : MonoBehaviour
             StartCoroutine(this.UIOutLinePop());
         }
 
-
         #region 비트 카운트가 0~15일때 개별 동작
         if (this.bitCount == 0)
         {
@@ -126,11 +125,7 @@ public class Stage : MonoBehaviour
         if (this.bitCount < 8 && this.battleSwitch)
         {
             //패턴 진행
-            Debug.LogFormat("{0} : {1}", this.bitCount,this.currentMonster.currentParttern[this.bitCount]);
-            var partternType = this.currentMonster.currentParttern[this.bitCount];
-
-            this.notes[this.bitCount].CreateNote(this.stagePrefab.bgm_currentBPM, partternType);
-           
+            this.EnemyCreateNote();
         }
 
         //비트카운트 업과 초기화
@@ -140,6 +135,7 @@ public class Stage : MonoBehaviour
             this.bitCount = 0;
         }
     }
+
 
     #region Tick_Num
 
@@ -171,6 +167,14 @@ public class Stage : MonoBehaviour
         {
             this.SpawnMonster();//몬스터 소환
         }
+    }
+
+    private void EnemyCreateNote()
+    {
+        Debug.LogFormat("{0} : {1}", this.bitCount, this.currentMonster.currentParttern[this.bitCount]);
+        var partternType = this.currentMonster.currentParttern[this.bitCount];
+
+        this.notes[this.bitCount].CreateNote(this.stagePrefab.bgm_currentBPM, partternType);
     }
     #endregion
 
@@ -299,7 +303,7 @@ public class Stage : MonoBehaviour
         if (spawnPercentage <= 70)//70%확률로 몬스터 소환
         {
             //몬스터 소환
-            int spwanDice = Random.Range(0, this.stageMonsters.Count-1);
+            int spwanDice = Random.Range(0, this.stageMonsters.Count - 1);
             var monster = this.stageMonsters[spwanDice];
 
             this.currentMonster = monster;
@@ -511,49 +515,58 @@ public class Stage : MonoBehaviour
     }
     #endregion
 
-    #region 함수 호출부
+    #region Key A, Key B, Key AB 함수 호출부
     private void KeyA()
     {
         Debug.Log("KeyA");
-        if (this.perfectZone.Operate)
-        {
-            this.CheckNote(0);
-        }
-        else if (this.missZone.Operate)
-        {
-            //miss
-        }
+
+        this.KeyInput(0);
+
     }
 
     private void KeyB()
     {
         Debug.Log("KeyB");
-        if (this.perfectZone.Operate)
-        {
-            this.CheckNote(1);
-        }
-        else if (this.missZone.Operate)
-        {
-            //miss
-        }
+
+        this.KeyInput(1);
+
     }
 
     private void KeyAB()
     {
         Debug.Log("KeyAB");
-        if (this.perfectZone.Operate)
+
+        this.KeyInput(2);
+
+    }
+
+    private void KeyInput(int key)// key(0 = A, 1 = B, 2 = AB)
+    {
+        //판정
+        bool goal = this.perfectZone.Operate;//perfectZone의 콜라이더 안에 노트가 있냐?
+        bool miss = this.missZone.Operate;//missZone의 콜라이더 안에 노트가 있냐?
+
+        if (goal && !miss)//goal = true, miss = false : perfect
         {
-            this.CheckNote(2);
+            this.CheckNote(key, 0);
         }
-        else if (this.missZone.Operate)
+        else if (goal && miss)//goal = true, miss = true : good
         {
-            //miss
+            this.CheckNote(key, 1);
+        }
+        else if (!goal && miss)//goal = false, miss = true : miss
+        {
+            this.CheckNote(key, 2);
+        }
+        else//goal = false, miss = false : 그냥 노트가 근처에 없음
+        {
+            //아무것도 아님 나중에 별일 없으면 여기 지우기
         }
     }
 
-    private void CheckNote(int key)//0 = A, 1 = B, 2 = AB
+    private void CheckNote(int key , int verdict)//verdict(0 = perfect, 1 = good, 2 = miss)
     {
-
+        //키와 판정을 받고, 적에게 노트 타입을 받아서 결과 산출
     }
     #endregion
     #endregion
